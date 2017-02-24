@@ -25583,6 +25583,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
+
 var IngestForm = function (_React$Component) {
   _inherits(IngestForm, _React$Component);
 
@@ -25607,114 +25609,24 @@ var IngestForm = function (_React$Component) {
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'First Name'
-              ),
-              _react2.default.createElement('input', { placeholder: 'First Name' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Middle Name'
-              ),
-              _react2.default.createElement('input', { placeholder: 'Middle Name' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Last Name'
-              ),
-              _react2.default.createElement('input', { placeholder: 'Last Name' })
-            )
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'First Name', placeholder: 'First Name' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Last Name', placeholder: 'Last Name' }),
+            _react2.default.createElement(_semanticUiReact.Form.Select, { label: 'Gender', options: options, placeholder: 'Gender' })
           ),
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Date of Birth'
-              ),
-              _react2.default.createElement('input', { placeholder: 'dd/mm/yyyy' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Email'
-              ),
-              _react2.default.createElement('input', { placeholder: 'Email' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Phone Number'
-              ),
-              _react2.default.createElement('input', { placeholder: 'Phone Number' })
-            )
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Date of Birth', placeholder: 'dd/mm/yyyy' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Email', placeholder: 'Email' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Phone Number', placeholder: 'Phone Number' })
           ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Field,
-            null,
-            _react2.default.createElement(
-              'label',
-              null,
-              'Address'
-            ),
-            _react2.default.createElement('input', { placeholder: 'Street Address' })
-          ),
+          _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Address', placeholder: 'Street Address' }),
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'City'
-              ),
-              _react2.default.createElement('input', { placeholder: 'City' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'State'
-              ),
-              _react2.default.createElement('input', { placeholder: 'State' })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Form.Field,
-              null,
-              _react2.default.createElement(
-                'label',
-                null,
-                'Zip Code'
-              ),
-              _react2.default.createElement('input', { placeholder: 'Zip Code' })
-            )
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'City', placeholder: 'City' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'State', placeholder: 'State' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Zip Code', placeholder: 'Zip Code' })
           ),
           _react2.default.createElement(_semanticUiReact.Form.TextArea, { label: 'Tell us more', placeholder: 'Tell us more' }),
           _react2.default.createElement(
@@ -25723,13 +25635,9 @@ var IngestForm = function (_React$Component) {
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at tincidunt tellus. Sed laoreet nisl sed dui semper bibendum. Sed blandit, enim vel hendrerit feugiat, mi enim consectetur ante, id pellentesque mi erat sit amet orci. Proin nisi augue, tincidunt ut varius tincidunt, cursus non nisi. Nunc sapien velit, pellentesque sed consectetur in, ultricies in arcu. Vivamus at odio ut neque lacinia semper et egestas tortor. Aliquam lacus est, hendrerit in dictum bibendum, ornare at ipsum. Donec id eros eget lacus varius ultricies. Mauris risus erat, tempor dapibus eros id, rhoncus ultrices lectus. Sed porta, nunc non cursus vehicula, felis nibh euismod odio, et dictum eros nulla eget mi.'
           ),
           _react2.default.createElement('br', null),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, { label: 'I agree to the Terms and Conditions' }),
           _react2.default.createElement(
-            _semanticUiReact.Form.Field,
-            null,
-            _react2.default.createElement(_semanticUiReact.Checkbox, { label: 'I agree to the Terms and Conditions' })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Button,
+            _semanticUiReact.Form.Button,
             { floated: 'right', color: 'teal', type: 'submit' },
             'Submit'
           )
