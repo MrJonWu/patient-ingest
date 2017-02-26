@@ -25575,6 +25575,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(780);
 
+var _States = __webpack_require__(821);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25593,7 +25595,37 @@ var IngestForm = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (IngestForm.__proto__ || Object.getPrototypeOf(IngestForm)).call(this, props));
 
-    _this.state = {};
+    _this.checkboxClickHandler = function (e, _ref) {
+      var name = _ref.name,
+          value = _ref.value;
+
+      if (name === 'maritalStatus') {
+        _this.setState({ maritalStatus: value }, function () {
+          return console.log('Marital Status: ', _this.state.maritalStatus);
+        });
+      } else if (name === 'race') {
+        _this.setState({ race: value }, function () {
+          return console.log('Race: ', _this.state.race);
+        });
+      }
+    };
+
+    _this.state = {
+      firstName: '',
+      lastName: '',
+      gender: '',
+      dob: '',
+      email: '',
+      phone: '',
+      patientStreet: '',
+      patientApt: '',
+      patientCity: '',
+      patientState: '',
+      patientZipCode: '',
+      maritalStatus: '',
+      race: '',
+      history: []
+    };
     return _this;
   }
 
@@ -25609,26 +25641,262 @@ var IngestForm = function (_React$Component) {
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'First Name', placeholder: 'First Name' }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Last Name', placeholder: 'Last Name' }),
-            _react2.default.createElement(_semanticUiReact.Form.Select, { label: 'Gender', options: options, placeholder: 'Gender' })
+            _react2.default.createElement(_semanticUiReact.Form.Input, { required: true, label: 'First Name', placeholder: 'First Name' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { required: true, label: 'Last Name', placeholder: 'Last Name' }),
+            _react2.default.createElement(_semanticUiReact.Form.Select, { required: true, label: 'Gender', options: options, placeholder: 'Gender' })
           ),
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Date of Birth', placeholder: 'dd/mm/yyyy' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { required: true, label: 'Date of Birth', placeholder: 'dd/mm/yyyy' }),
             _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Email', placeholder: 'Email' }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Phone Number', placeholder: 'Phone Number' })
+            _react2.default.createElement(_semanticUiReact.Form.Input, { required: true, label: 'Phone Number', placeholder: '(xxx) xxx-xxxx' })
           ),
-          _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Address', placeholder: 'Street Address' }),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            null,
+            _react2.default.createElement(_semanticUiReact.Form.Input, { className: 'thirteen wide field', label: 'Home Address', placeholder: 'Street Address' }),
+            _react2.default.createElement(_semanticUiReact.Form.Input, { className: 'three wide field', label: 'Apt', placeholder: 'Apt #' })
+          ),
           _react2.default.createElement(
             _semanticUiReact.Form.Group,
             { widths: 'equal' },
             _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'City', placeholder: 'City' }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'State', placeholder: 'State' }),
+            _react2.default.createElement(_semanticUiReact.Form.Select, { label: 'State', search: true, selection: true, options: _States.States, placeholder: 'State' }),
             _react2.default.createElement(_semanticUiReact.Form.Input, { label: 'Zip Code', placeholder: 'Zip Code' })
           ),
-          _react2.default.createElement(_semanticUiReact.Form.TextArea, { label: 'Tell us more', placeholder: 'Tell us more' }),
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+              'b',
+              null,
+              'Marital Status'
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Married',
+              name: 'maritalStatus',
+              value: 'Married',
+              checked: this.state.maritalStatus === 'Married',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Single',
+              name: 'maritalStatus',
+              value: 'Single',
+              checked: this.state.maritalStatus === 'Single',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, { radio: true, label: 'Divorced',
+              name: 'maritalStatus',
+              value: 'Divorced',
+              checked: this.state.maritalStatus === 'Divorced',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Life Partner',
+              name: 'maritalStatus',
+              value: 'Life Partner',
+              checked: this.state.maritalStatus === 'Life Partner',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Separated',
+              name: 'maritalStatus',
+              value: 'Separated',
+              checked: this.state.maritalStatus === 'Separated',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Widowed',
+              name: 'maritalStatus',
+              value: 'Widowed',
+              checked: this.state.maritalStatus === 'Widowed',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Other',
+              name: 'maritalStatus',
+              value: 'Other',
+              checked: this.state.maritalStatus === 'Other',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+              'b',
+              null,
+              'Race'
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Black - Non Hispanic',
+              name: 'race',
+              value: 'Black - Non Hispanic',
+              checked: this.state.race === 'Black - Non Hispanic',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'American Indian/Alaskan Native',
+              name: 'race',
+              value: 'American Indian/Alaskan Native',
+              checked: this.state.race === 'American Indian/Alaskan Native',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Hispanic',
+              name: 'race',
+              value: 'Hispanic',
+              checked: this.state.race === 'Hispanic',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Asian/Pacific Islander',
+              name: 'race',
+              value: 'Asian/Pacific Islander',
+              checked: this.state.race === 'Asian/Pacific Islander',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'White - Non Hispanic',
+              name: 'race',
+              value: 'White - Non Hispanic',
+              checked: this.state.race === 'White - Non Hispanic',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              radio: true,
+              label: 'Other',
+              name: 'race',
+              value: 'Other',
+              checked: this.state.race === 'Other',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+              'b',
+              null,
+              'Please check to indicate if you have ever had the following conditions:'
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Diabetes',
+              name: 'history',
+              value: 'Diabetes',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Kidney disease',
+              name: 'history',
+              value: 'Kidney disease',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Stroke',
+              name: 'history',
+              value: 'Stroke',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Tuberculosis',
+              name: 'history',
+              value: 'Tuberculosis',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Arrythmia',
+              name: 'history',
+              value: 'Arrythmia',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'High blood pressure',
+              name: 'history',
+              value: 'High blood pressure',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Hepatitis',
+              name: 'history',
+              value: 'Hepatitis',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Depression',
+              name: 'history',
+              value: 'Depression',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Coronary Artery Disease',
+              name: 'history',
+              value: 'Coronary Artery Disease',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Sexually transmitted disease',
+              name: 'history',
+              value: 'Sexually transmitted disease',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Asthma',
+              name: 'history',
+              value: 'Asthma',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Thyroid disease',
+              name: 'history',
+              value: 'Thyroid disease',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { widths: 'equal' },
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Emphysema',
+              name: 'history',
+              value: 'Emphysema',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Congestive Heart Failure',
+              name: 'history',
+              value: 'Congestive Heart Failure',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Heart attack',
+              name: 'history',
+              value: 'Heart attack',
+              onChange: this.checkboxClickHandler }),
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Seizures',
+              name: 'history',
+              value: 'Seizures',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            null,
+            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+              label: 'Cancer',
+              name: 'history',
+              value: 'Cancer',
+              onChange: this.checkboxClickHandler })
+          ),
+          _react2.default.createElement(_semanticUiReact.Form.TextArea, { autoHeight: true, label: 'Medication allergies or reactions', placeholder: 'Please list any medication allergies or reactions' }),
+          _react2.default.createElement(_semanticUiReact.Form.TextArea, { autoHeight: true, label: 'Current medications', placeholder: 'Please list any medications that you are currently taking. Include non-prescription medications and vitamins or supplements' }),
+          _react2.default.createElement(_semanticUiReact.Form.TextArea, { label: 'Other comments', placeholder: 'Tell us more' }),
           _react2.default.createElement(
             'p',
             null,
@@ -56508,6 +56776,18 @@ var _App2 = _interopRequireDefault(_App);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
+
+/***/ }),
+/* 821 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var States = exports.States = [{ key: 'AL', text: 'Alabama', value: 'Alabama' }, { key: 'AK', text: 'Alaska', value: 'Alaska' }, { key: 'AZ', text: 'Arizona', value: 'Arizona' }, { key: 'AR', text: 'Arkansas', value: 'Arkansas' }, { key: 'CA', text: 'California', value: 'California' }, { key: 'CO', text: 'Colorado', value: 'Colorado' }, { key: 'CT', text: 'Connecticut', value: 'Connecticut' }, { key: 'DE', text: 'Delaware', value: 'Delaware' }, { key: 'DC', text: 'District Of Columbia', value: 'District Of Columbia' }, { key: 'FL', text: 'Florida', value: 'Florida' }, { key: 'GA', text: 'Georgia', value: 'Georgia' }, { key: 'HI', text: 'Hawaii', value: 'Hawaii' }, { key: 'ID', text: 'Idaho', value: 'Idaho' }, { key: 'IL', text: 'Illinois', value: 'Illinois' }, { key: 'IN', text: 'Indiana', value: 'Indiana' }, { key: 'IA', text: 'Iowa', value: 'Iowa' }, { key: 'KS', text: 'Kansas', value: 'Kansas' }, { key: 'KY', text: 'Kentucky', value: 'Kentucky' }, { key: 'LA', text: 'Louisiana', value: 'Louisiana' }, { key: 'ME', text: 'Maine', value: 'Maine' }, { key: 'MD', text: 'Maryland', value: 'Maryland' }, { key: 'MA', text: 'Massachusetts', value: 'Massachusetts' }, { key: 'MI', text: 'Michigan', value: 'Michigan' }, { key: 'MN', text: 'Minnesota', value: 'Minnesota' }, { key: 'MS', text: 'Mississippi', value: 'Mississippi' }, { key: 'MO', text: 'Missouri', value: 'Missouri' }, { key: 'MT', text: 'Montana', value: 'Montana' }, { key: 'NE', text: 'Nebraska', value: 'Nebraska' }, { key: 'NV', text: 'Nevada', value: 'Nevada' }, { key: 'NH', text: 'New Hampshire', value: 'New Hampshire' }, { key: 'NJ', text: 'New Jersey', value: 'New Jersey' }, { key: 'NM', text: 'New Mexico', value: 'New Mexico' }, { key: 'NY', text: 'New York', value: 'New York' }, { key: 'NC', text: 'North Carolina', value: 'North Carolina' }, { key: 'ND', text: 'North Dakota', value: 'North Dakota' }, { key: 'OH', text: 'Ohio', value: 'Ohio' }, { key: 'OK', text: 'Oklahoma', value: 'Oklahoma' }, { key: 'OR', text: 'Oregon', value: 'Oregon' }, { key: 'PA', text: 'Pennsylvania', value: 'Pennsylvania' }, { key: 'RI', text: 'Rhode Island', value: 'Rhode Island' }, { key: 'SC', text: 'South Carolina', value: 'South Carolina' }, { key: 'SD', text: 'South Dakota', value: 'South Dakota' }, { key: 'TN', text: 'Tennessee', value: 'Tennessee' }, { key: 'TX', text: 'Texas', value: 'Texas' }, { key: 'UT', text: 'Utah', value: 'Utah' }, { key: 'VT', text: 'Vermont', value: 'Vermont' }, { key: 'VA', text: 'Virginia', value: 'Virginia' }, { key: 'WA', text: 'Washington', value: 'Washington' }, { key: 'WV', text: 'West Virginia', value: 'West Virginia' }, { key: 'WI', text: 'Wisconsin', value: 'Wisconsin' }, { key: 'WY', text: 'Wyoming', value: 'Wyoming' }];
 
 /***/ })
 /******/ ]);
