@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, Form, Container, Divider } from 'semantic-ui-react';
+import { Button, Form, Container } from 'semantic-ui-react';
 import {States as stateList} from '../data/States.jsx';
 import GeneralInformation from './GeneralInformation.jsx';
 import MaritalStatus from './MaritalStatus.jsx';
 import Race from './Race.jsx';
 import MedicalHistory from './MedicalHistory.jsx';
 import Contract from  './Contract.jsx';
+import ModalButton from './Modal.jsx';
 
 const requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode','smoke', 'alcohol', 'drugs', 'agree'];
 
@@ -35,6 +36,7 @@ export default class IngestForm extends React.Component {
       surgeries: '',
       otherComments: '',
       agree: false,
+      submission: false,
     };
   }
 
@@ -61,30 +63,38 @@ export default class IngestForm extends React.Component {
     return true;
   }
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    if (this.checkReqFields()) {
-      console.log(this.state);
-    } else {
-      console.log('MISSING INFO');
-    }
+  onSubmit = () => {
+    fetch('http://192.168.1.83:3000/api/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      this.setState({submission: true}, () => console.log(res));
+    })
+    .catch((error) => alert('There was a problem with your submission: ' + error.message));
   }
 
   render() {
     return (
        <Container>
+       {this.state.submission ? 
+        <div>
+          <h1>Success!</h1>
+        </div> :
         <Form>
+          <h1>Patient Ingest Form</h1>
           <GeneralInformation onChangeHandler={this.onChangeHandler} />
           <MaritalStatus clickHandler={this.onChangeHandler} />
           <Race clickHandler={this.onChangeHandler} />
           <MedicalHistory clickHandler={this.checkboxClickHandler} onChangeHandler={this.onChangeHandler}/>
           <Contract clickHandler={this.agreeHandler} />
-          <Form.Button 
-          floated='right' 
-          color='teal' 
-          type='submit'
-          onClick={this.onSubmit}>Submit</Form.Button>
-        </Form>
+          <ModalButton currentState={this.state} checkReqFields={this.checkReqFields} onSubmit={this.onSubmit} />
+        </Form> }
       </Container>
     );
   }

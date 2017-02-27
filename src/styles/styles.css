@@ -10,7 +10,9 @@
         -ms-user-select: none; 
             user-select: none;
 }
-
+h1 {
+  text-align: center;
+}
 nav {
   height: 62px;
   width: 100%;
@@ -24,4 +26,8 @@ nav {
   font-size: 32px;
   color: #17c0a9;
   padding-left: 10px;
+}
+footer {
+  height: 100px;
+  width: 100%;
 }

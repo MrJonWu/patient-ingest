@@ -11,7 +11,6 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1 style={{textAlign: 'center'}}> Patient Ingest Form</h1>
         <IngestForm />
       </div>
     );

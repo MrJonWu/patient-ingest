@@ -25541,11 +25541,6 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(
-          'h1',
-          { style: { textAlign: 'center' } },
-          ' Patient Ingest Form'
-        ),
         _react2.default.createElement(_Form2.default, null)
       );
     }
@@ -25577,6 +25572,30 @@ var _semanticUiReact = __webpack_require__(781);
 
 var _States = __webpack_require__(419);
 
+var _GeneralInformation = __webpack_require__(824);
+
+var _GeneralInformation2 = _interopRequireDefault(_GeneralInformation);
+
+var _MaritalStatus = __webpack_require__(822);
+
+var _MaritalStatus2 = _interopRequireDefault(_MaritalStatus);
+
+var _Race = __webpack_require__(823);
+
+var _Race2 = _interopRequireDefault(_Race);
+
+var _MedicalHistory = __webpack_require__(825);
+
+var _MedicalHistory2 = _interopRequireDefault(_MedicalHistory);
+
+var _Contract = __webpack_require__(826);
+
+var _Contract2 = _interopRequireDefault(_Contract);
+
+var _Modal = __webpack_require__(827);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -25587,7 +25606,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
+var requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode', 'smoke', 'alcohol', 'drugs', 'agree'];
 
 var IngestForm = function (_React$Component) {
   _inherits(IngestForm, _React$Component);
@@ -25597,13 +25616,15 @@ var IngestForm = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (IngestForm.__proto__ || Object.getPrototypeOf(IngestForm)).call(this, props));
 
+    _this.agreeHandler = function () {
+      _this.setState({ agree: !_this.state.agree });
+    };
+
     _this.onChangeHandler = function (e, _ref) {
       var name = _ref.name,
           value = _ref.value;
 
-      _this.setState(_defineProperty({}, name, value), function () {
-        return console.log(_this.state);
-      });
+      _this.setState(_defineProperty({}, name, value));
     };
 
     _this.checkboxClickHandler = function (e, _ref2) {
@@ -25611,20 +25632,42 @@ var IngestForm = function (_React$Component) {
           value = _ref2.value;
 
       var tempArr = _this.state.history;
-      if (!tempArr.includes(value)) {
-        tempArr.push(value);
-      } else {
-        tempArr.splice(tempArr.indexOf(value), 1);
+      !tempArr.includes(value) ? tempArr.push(value) : tempArr.splice(tempArr.indexOf(value), 1);
+      _this.setState({ history: tempArr });
+    };
+
+    _this.checkReqFields = function () {
+      for (var i = 0; i < requiredFields.length; i++) {
+        if (!_this.state[requiredFields[i]]) {
+          return false;
+        }
       }
-      _this.setState({ history: tempArr }, function () {
-        return console.log(_this.state);
+      return true;
+    };
+
+    _this.onSubmit = function () {
+      fetch('http://192.168.1.83:3000/api/submit', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(_this.state)
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.setState({ submission: true }, function () {
+          return console.log(res);
+        });
+      }).catch(function (error) {
+        return alert('There was a problem with your submission: ' + error.message);
       });
     };
 
     _this.state = {
       firstName: '',
       lastName: '',
-      gender: '',
+      sex: '',
       dateOfBirth: '',
       email: '',
       phone: '',
@@ -25642,14 +25685,12 @@ var IngestForm = function (_React$Component) {
       allergies: '',
       medications: '',
       surgeries: '',
-      otherComments: ''
+      otherComments: '',
+      agree: false,
+      submission: false
     };
     return _this;
   }
-
-  // inputChangeHandler = (e) => {
-  //   this.setState({[e.target.name]: e.target.value}, () => console.log(this.state));
-  // };
 
   _createClass(IngestForm, [{
     key: 'render',
@@ -25657,460 +25698,28 @@ var IngestForm = function (_React$Component) {
       return _react2.default.createElement(
         _semanticUiReact.Container,
         null,
-        _react2.default.createElement(
+        this.state.submission ? _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Success!'
+          )
+        ) : _react2.default.createElement(
           _semanticUiReact.Form,
           null,
           _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'firstName',
-              label: 'First Name',
-              placeholder: 'First Name',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'lastName',
-              label: 'Last Name',
-              placeholder: 'Last Name',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Select, {
-              required: true,
-              name: 'gender',
-              label: 'Gender',
-              options: options,
-              placeholder: 'Gender',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              type: 'date',
-              name: 'dateOfBirth',
-              label: 'Date of Birth',
-              placeholder: 'mm/dd/yyyy',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'email',
-              label: 'Email',
-              type: 'email',
-              placeholder: 'Email',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'phone',
-              label: 'Phone Number',
-              placeholder: '(xxx) xxx-xxxx',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
+            'h1',
             null,
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              className: 'thirteen wide field',
-              required: true,
-              name: 'street',
-              label: 'Home Address',
-              placeholder: 'Street Address',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              className: 'three wide field',
-              name: 'apt',
-              label: 'Apt',
-              placeholder: 'Apt #',
-              onChange: this.onChangeHandler })
+            'Patient Ingest Form'
           ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              label: 'City',
-              name: 'city',
-              placeholder: 'City',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Select, {
-              required: true,
-              label: 'State',
-              name: 'state',
-              search: true,
-              selection: true,
-              options: _States.States,
-              placeholder: 'State',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              type: 'number',
-              name: 'zipcode',
-              label: 'Zip Code',
-              placeholder: 'Zip Code',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(
-              'b',
-              null,
-              'Marital Status'
-            )
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Married',
-              value: 'Married',
-              checked: this.state.maritalStatus === 'Married',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Single',
-              value: 'Single',
-              checked: this.state.maritalStatus === 'Single',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Divorced',
-              value: 'Divorced',
-              checked: this.state.maritalStatus === 'Divorced',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Life Partner',
-              value: 'Life Partner',
-              checked: this.state.maritalStatus === 'Life Partner',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Separated',
-              value: 'Separated',
-              checked: this.state.maritalStatus === 'Separated',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Widowed',
-              value: 'Widowed',
-              checked: this.state.maritalStatus === 'Widowed',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'maritalStatus',
-              label: 'Other',
-              value: 'Other',
-              checked: this.state.maritalStatus === 'Other',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(
-              'b',
-              null,
-              'Race'
-            )
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'Black - Non Hispanic',
-              value: 'Black - Non Hispanic',
-              checked: this.state.race === 'Black - Non Hispanic',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'American Indian/Alaskan Native',
-              value: 'American Indian/Alaskan Native',
-              checked: this.state.race === 'American Indian/Alaskan Native',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'Hispanic',
-              value: 'Hispanic',
-              checked: this.state.race === 'Hispanic',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'Asian/Pacific Islander',
-              value: 'Asian/Pacific Islander',
-              checked: this.state.race === 'Asian/Pacific Islander',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'White - Non Hispanic',
-              value: 'White - Non Hispanic',
-              checked: this.state.race === 'White - Non Hispanic',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              radio: true,
-              name: 'race',
-              label: 'Other',
-              value: 'Other',
-              checked: this.state.race === 'Other',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(
-              'b',
-              null,
-              'Please check to indicate if you have ever had the following conditions:'
-            )
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Cancer',
-              value: 'Cancer',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Diabetes',
-              value: 'Diabetes',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Hypertension',
-              value: 'Hypertension',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Coronary Artery Disease',
-              value: 'Coronary Artery Disease',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Kidney disease',
-              value: 'Kidney disease',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Congestive Heart Failure',
-              value: 'Congestive Heart Failure',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Heart attack',
-              value: 'Heart attack',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Stroke',
-              value: 'Stroke',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Arrythmia',
-              value: 'Arrythmia',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Deep vein thrombosis',
-              value: 'Deep vein thrombosis',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Asthma',
-              value: 'Asthma',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Chronic Obstructive Pulmonary Disease',
-              value: 'Chronic Obstructive Pulmonary Disease',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Tuberculosis',
-              value: 'Tuberculosis',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Gastro esophageal reflux disease',
-              value: 'Gastro esophageal reflux disease',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Irratable bowel syndrome',
-              value: 'Irratable bowel syndrome',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Inflammatory bowel disease',
-              value: 'Inflammatory bowel disease',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Hepatitis',
-              value: 'Hepatitis',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Cirrhosis',
-              value: 'Cirrhosis',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Kidney Disease',
-              value: 'Kidney Disease',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Thyroid disease',
-              value: 'Thyroid disease',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Arthritis',
-              value: 'Arthritis',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Back pain',
-              value: 'Back pain',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Seizures',
-              value: 'Seizures',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Depression',
-              value: 'Depression',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Bipolar',
-              value: 'Bipolar',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Anxiety',
-              value: 'Anxiety',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Psychotic disorder',
-              value: 'Psychotic disorder',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'Substance abuse',
-              value: 'Substance abuse',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'HIV',
-              value: 'HIV',
-              onChange: this.checkboxClickHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-              name: 'history',
-              label: 'STDs',
-              value: 'STDs',
-              onChange: this.checkboxClickHandler })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Group,
-            { widths: 'equal' },
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'smoke',
-              label: 'Do you smoke any tobacco products?',
-              placeholder: 'If yes, how much and how often?',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'alcohol',
-              label: 'Do you drink alcohol?',
-              placeholder: 'If yes, how much and how often?',
-              onChange: this.onChangeHandler }),
-            _react2.default.createElement(_semanticUiReact.Form.Input, {
-              required: true,
-              name: 'drugs',
-              label: 'Have you regularly used other drugs?',
-              placeholder: 'If yes, how much and how often?',
-              onChange: this.onChangeHandler })
-          ),
-          _react2.default.createElement(_semanticUiReact.Form.TextArea, {
-            autoHeight: true,
-            name: 'medications',
-            label: 'Current medications',
-            placeholder: 'Please list any medications that you are currently taking. Include non-prescription medications and vitamins or supplements (Medication name / Dosage)',
-            onChange: this.onChangeHandler }),
-          _react2.default.createElement(_semanticUiReact.Form.TextArea, {
-            autoHeight: true,
-            name: 'allergies',
-            label: 'Medication allergies or reactions',
-            placeholder: 'Please list any medication allergies or reactions',
-            onChange: this.onChangeHandler }),
-          _react2.default.createElement(_semanticUiReact.Form.TextArea, {
-            autoHeight: true,
-            name: 'surgeries',
-            label: 'Please list any surgeries or hospital stays you had and their approximate date / year', placeholder: 'Type of surgery / reason for hospitalization / location / date',
-            onChange: this.onChangeHandler }),
-          _react2.default.createElement(_semanticUiReact.Form.TextArea, {
-            name: 'otherComments',
-            label: 'Other comments',
-            placeholder: 'Other important information we may have missed',
-            onChange: this.onChangeHandler }),
-          _react2.default.createElement(
-            'p',
-            null,
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at tincidunt tellus. Sed laoreet nisl sed dui semper bibendum. Sed blandit, enim vel hendrerit feugiat, mi enim consectetur ante, id pellentesque mi erat sit amet orci. Proin nisi augue, tincidunt ut varius tincidunt, cursus non nisi. Nunc sapien velit, pellentesque sed consectetur in, ultricies in arcu. Vivamus at odio ut neque lacinia semper et egestas tortor. Aliquam lacus est, hendrerit in dictum bibendum, ornare at ipsum. Donec id eros eget lacus varius ultricies. Mauris risus erat, tempor dapibus eros id, rhoncus ultrices lectus. Sed porta, nunc non cursus vehicula, felis nibh euismod odio, et dictum eros nulla eget mi.'
-          ),
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
-            required: true,
-            label: 'I agree to the Terms and Conditions' }),
-          _react2.default.createElement(
-            _semanticUiReact.Form.Button,
-            {
-              floated: 'right',
-              color: 'teal',
-              type: 'submit' },
-            'Submit'
-          )
+          _react2.default.createElement(_GeneralInformation2.default, { onChangeHandler: this.onChangeHandler }),
+          _react2.default.createElement(_MaritalStatus2.default, { clickHandler: this.onChangeHandler }),
+          _react2.default.createElement(_Race2.default, { clickHandler: this.onChangeHandler }),
+          _react2.default.createElement(_MedicalHistory2.default, { clickHandler: this.checkboxClickHandler, onChangeHandler: this.onChangeHandler }),
+          _react2.default.createElement(_Contract2.default, { clickHandler: this.agreeHandler }),
+          _react2.default.createElement(_Modal2.default, { currentState: this.state, checkReqFields: this.checkReqFields, onSubmit: this.onSubmit })
         )
       );
     }
@@ -56990,6 +56599,941 @@ var _App2 = _interopRequireDefault(_App);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
+
+/***/ }),
+/* 822 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MaritalStatus = function (_React$Component) {
+  _inherits(MaritalStatus, _React$Component);
+
+  function MaritalStatus(props) {
+    _classCallCheck(this, MaritalStatus);
+
+    var _this = _possibleConstructorReturn(this, (MaritalStatus.__proto__ || Object.getPrototypeOf(MaritalStatus)).call(this, props));
+
+    _this.onClickHandler = function (e, _ref) {
+      var value = _ref.value;
+
+      _this.setState({ maritalStatus: value });
+    };
+
+    _this.state = {
+      maritalStatus: ''
+    };
+    return _this;
+  }
+
+  _createClass(MaritalStatus, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'b',
+            null,
+            'Marital Status'
+          )
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Married',
+            value: 'Married',
+            checked: this.state.maritalStatus === 'Married',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Single',
+            value: 'Single',
+            checked: this.state.maritalStatus === 'Single',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Divorced',
+            value: 'Divorced',
+            checked: this.state.maritalStatus === 'Divorced',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Life Partner',
+            value: 'Life Partner',
+            checked: this.state.maritalStatus === 'Life Partner',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Separated',
+            value: 'Separated',
+            checked: this.state.maritalStatus === 'Separated',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Widowed',
+            value: 'Widowed',
+            checked: this.state.maritalStatus === 'Widowed',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'maritalStatus',
+            label: 'Other',
+            value: 'Other',
+            checked: this.state.maritalStatus === 'Other',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler })
+        )
+      );
+    }
+  }]);
+
+  return MaritalStatus;
+}(_react2.default.Component);
+
+exports.default = MaritalStatus;
+
+/***/ }),
+/* 823 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Race = function (_React$Component) {
+  _inherits(Race, _React$Component);
+
+  function Race(props) {
+    _classCallCheck(this, Race);
+
+    var _this = _possibleConstructorReturn(this, (Race.__proto__ || Object.getPrototypeOf(Race)).call(this, props));
+
+    _this.onClickHandler = function (e, _ref) {
+      var value = _ref.value;
+
+      _this.setState({ race: value });
+    };
+
+    _this.state = {
+      race: ''
+    };
+    return _this;
+  }
+
+  _createClass(Race, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'b',
+            null,
+            'Race'
+          )
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'Black - Non Hispanic',
+            value: 'Black - Non Hispanic',
+            checked: this.state.race === 'Black - Non Hispanic',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'American Indian / Alaskan Native',
+            value: 'American Indian / Alaskan Native',
+            checked: this.state.race === 'American Indian / Alaskan Native',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'Hispanic',
+            value: 'Hispanic',
+            checked: this.state.race === 'Hispanic',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'Asian / Pacific Islander',
+            value: 'Asian / Pacific Islander',
+            checked: this.state.race === 'Asian / Pacific Islander',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'White - Non Hispanic',
+            value: 'White - Non Hispanic',
+            checked: this.state.race === 'White - Non Hispanic',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+            radio: true,
+            name: 'race',
+            label: 'Other',
+            value: 'Other',
+            checked: this.state.race === 'Other',
+            onClick: this.onClickHandler,
+            onChange: this.props.clickHandler })
+        )
+      );
+    }
+  }]);
+
+  return Race;
+}(_react2.default.Component);
+
+exports.default = Race;
+
+/***/ }),
+/* 824 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+var _States = __webpack_require__(419);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
+
+var GeneralInformation = function (_React$Component) {
+  _inherits(GeneralInformation, _React$Component);
+
+  function GeneralInformation(props) {
+    _classCallCheck(this, GeneralInformation);
+
+    var _this = _possibleConstructorReturn(this, (GeneralInformation.__proto__ || Object.getPrototypeOf(GeneralInformation)).call(this, props));
+
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(GeneralInformation, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'firstName',
+            label: 'First Name',
+            placeholder: 'First Name',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'lastName',
+            label: 'Last Name',
+            placeholder: 'Last Name',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Select, {
+            required: true,
+            name: 'sex',
+            label: 'Sex',
+            options: options,
+            placeholder: 'Sex',
+            onChange: this.props.onChangeHandler })
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            type: 'date',
+            name: 'dateOfBirth',
+            label: 'Date of Birth',
+            placeholder: 'mm/dd/yyyy',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'email',
+            label: 'Email',
+            type: 'email',
+            placeholder: 'Email',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'phone',
+            label: 'Phone Number',
+            placeholder: '(xxx) xxx-xxxx',
+            onChange: this.props.onChangeHandler })
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          null,
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            className: 'thirteen wide field',
+            required: true,
+            name: 'street',
+            label: 'Home Address',
+            placeholder: 'Street Address',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            className: 'three wide field',
+            name: 'apt',
+            label: 'Apt',
+            placeholder: 'Apt #',
+            onChange: this.props.onChangeHandler })
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            label: 'City',
+            name: 'city',
+            placeholder: 'City',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Select, {
+            required: true,
+            label: 'State',
+            name: 'state',
+            search: true,
+            selection: true,
+            options: _States.States,
+            placeholder: 'State',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            type: 'number',
+            name: 'zipcode',
+            label: 'Zip Code',
+            placeholder: 'Zip Code',
+            onChange: this.props.onChangeHandler })
+        )
+      );
+    }
+  }]);
+
+  return GeneralInformation;
+}(_react2.default.Component);
+
+exports.default = GeneralInformation;
+
+/***/ }),
+/* 825 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var options = [{ 'options': ['Cancer', 'Diabetes', 'Hypertension', 'Coronary Artery Disease', 'Congestive Heart Failure'] }, { 'options': ['Heart attack', 'Stroke', 'Arrythmia', 'Deep vein thrombosis', 'Asthma'] }, { 'options': ['Chronic Obstructive Pulmonary Disease', 'Tuberculosis', 'Gastro esophageal reflux disease', 'Irritable bowel syndrome', 'Inflammatory bowel disease'] }, { 'options': ['Hepatitis', 'Cirrhosis', 'Kidney Disease', 'Thyroid disease', 'Arthritis'] }, { 'options': ['Back pain', 'Seizures', 'Depression', 'Bipolar', 'Anxiety'] }, { 'options': ['Psychotic disorder', 'Substance abuse', 'HIV', 'STDs', 'Eye disease'] }];
+
+var MedicalHistory = function (_React$Component) {
+  _inherits(MedicalHistory, _React$Component);
+
+  function MedicalHistory(props) {
+    _classCallCheck(this, MedicalHistory);
+
+    var _this = _possibleConstructorReturn(this, (MedicalHistory.__proto__ || Object.getPrototypeOf(MedicalHistory)).call(this, props));
+
+    _this.onClickHandler = function (e, _ref) {
+      var value = _ref.value;
+
+      _this.setState({ history: value });
+    };
+
+    _this.state = {
+      history: ''
+    };
+    return _this;
+  }
+
+  _createClass(MedicalHistory, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'b',
+            null,
+            'Please check to indicate if you have ever had the following conditions:'
+          )
+        ),
+        options.map(function (row, key) {
+          return _react2.default.createElement(
+            _semanticUiReact.Form.Group,
+            { key: key, widths: 'equal' },
+            row.options.map(function (option, key) {
+              return _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+                key: key,
+                name: 'history',
+                label: option,
+                value: option,
+                onChange: _this2.props.clickHandler });
+            })
+          );
+        }),
+        _react2.default.createElement(
+          _semanticUiReact.Form.Group,
+          { widths: 'equal' },
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'smoke',
+            label: 'Do you smoke any tobacco products?',
+            placeholder: 'If yes, how much and how often?',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'alcohol',
+            label: 'Do you drink alcohol?',
+            placeholder: 'If yes, how much and how often?',
+            onChange: this.props.onChangeHandler }),
+          _react2.default.createElement(_semanticUiReact.Form.Input, {
+            required: true,
+            name: 'drugs',
+            label: 'Have you regularly used other drugs?',
+            placeholder: 'If yes, how much and how often?',
+            onChange: this.props.onChangeHandler })
+        ),
+        _react2.default.createElement(_semanticUiReact.Form.TextArea, {
+          autoHeight: true,
+          name: 'medications',
+          label: 'Current medications',
+          placeholder: 'Please list any medications that you are currently taking. Include non-prescription medications and vitamins or supplements (Medication name / Dosage)',
+          onChange: this.props.onChangeHandler }),
+        _react2.default.createElement(_semanticUiReact.Form.TextArea, {
+          autoHeight: true,
+          name: 'allergies',
+          label: 'Medication allergies or reactions',
+          placeholder: 'Please list any medication allergies or reactions',
+          onChange: this.props.onChangeHandler }),
+        _react2.default.createElement(_semanticUiReact.Form.TextArea, {
+          autoHeight: true,
+          name: 'surgeries',
+          label: 'Please list any surgeries or hospital stays you had and their approximate date / year', placeholder: 'Type of surgery / reason for hospitalization / location / date',
+          onChange: this.props.onChangeHandler }),
+        _react2.default.createElement(_semanticUiReact.Form.TextArea, {
+          name: 'otherComments',
+          label: 'Other comments',
+          placeholder: 'Other important information we may have missed',
+          onChange: this.props.onChangeHandler })
+      );
+    }
+  }]);
+
+  return MedicalHistory;
+}(_react2.default.Component);
+
+exports.default = MedicalHistory;
+
+/***/ }),
+/* 826 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Contract = function (_React$Component) {
+  _inherits(Contract, _React$Component);
+
+  function Contract(props) {
+    _classCallCheck(this, Contract);
+
+    var _this = _possibleConstructorReturn(this, (Contract.__proto__ || Object.getPrototypeOf(Contract)).call(this, props));
+
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(Contract, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at tincidunt tellus. Sed laoreet nisl sed dui semper bibendum. Sed blandit, enim vel hendrerit feugiat, mi enim consectetur ante, id pellentesque mi erat sit amet orci. Proin nisi augue, tincidunt ut varius tincidunt, cursus non nisi. Nunc sapien velit, pellentesque sed consectetur in, ultricies in arcu. Vivamus at odio ut neque lacinia semper et egestas tortor. Aliquam lacus est, hendrerit in dictum bibendum, ornare at ipsum. Donec id eros eget lacus varius ultricies. Mauris risus erat, tempor dapibus eros id, rhoncus ultrices lectus. Sed porta, nunc non cursus vehicula, felis nibh euismod odio, et dictum eros nulla eget mi.'
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(_semanticUiReact.Form.Checkbox, {
+          required: true,
+          label: 'I agree to the Terms and Conditions',
+          onClick: this.props.clickHandler })
+      );
+    }
+  }]);
+
+  return Contract;
+}(_react2.default.Component);
+
+exports.default = Contract;
+
+/***/ }),
+/* 827 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(781);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalButton = function (_React$Component) {
+  _inherits(ModalButton, _React$Component);
+
+  function ModalButton(props) {
+    _classCallCheck(this, ModalButton);
+
+    var _this = _possibleConstructorReturn(this, (ModalButton.__proto__ || Object.getPrototypeOf(ModalButton)).call(this, props));
+
+    _this.show = function (dimmer) {
+      return function (e) {
+        e.preventDefault();
+        if (_this.props.checkReqFields()) {
+          _this.setState({ complete: true }, function () {
+            return _this.setState({ dimmer: dimmer, open: true });
+          });
+        } else {
+          _this.setState({ complete: false }, function () {
+            return _this.setState({ dimmer: dimmer, open: true });
+          });
+        }
+      };
+    };
+
+    _this.close = function () {
+      _this.setState({ open: false });
+    };
+
+    _this.onSubmit = function () {
+      _this.setState({ open: false });
+      _this.props.onSubmit();
+    };
+
+    _this.state = {
+      open: false,
+      complete: false
+    };
+    return _this;
+  }
+
+  _createClass(ModalButton, [{
+    key: 'render',
+    value: function render() {
+      var _state = this.state,
+          open = _state.open,
+          dimmer = _state.dimmer;
+
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          _semanticUiReact.Button,
+          {
+            floated: 'right',
+            color: 'teal',
+            type: 'submit',
+            onClick: this.show('inverted') },
+          'Submit'
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Modal,
+          { dimmer: dimmer, open: open, onClose: this.close },
+          _react2.default.createElement(
+            _semanticUiReact.Modal.Header,
+            null,
+            'Review Your Submission'
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Modal.Content,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Modal.Description,
+              null,
+              this.state.complete ? _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Header,
+                  null,
+                  'Hello ',
+                  this.props.currentState.firstName + ',',
+                  ' '
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Please confirm that the information below is correct.'
+                ),
+                _react2.default.createElement(_semanticUiReact.Divider, null),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Full Name:'
+                  ),
+                  ' ',
+                  this.props.currentState.firstName + ' ' + this.props.currentState.lastName
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Sex:'
+                  ),
+                  ' ',
+                  this.props.currentState.sex
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Date of Birth:'
+                  ),
+                  ' ',
+                  this.props.currentState.dateOfBirth
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Email:'
+                  ),
+                  ' ',
+                  this.props.currentState.email
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Phone:'
+                  ),
+                  ' ',
+                  this.props.currentState.phone
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Home Address:'
+                  ),
+                  ' ',
+                  this.props.currentState.street + ', ' + this.props.currentState.city + ', ' + this.props.currentState.state + ', ' + this.props.currentState.zipcode
+                ),
+                this.props.currentState.apt ? _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Apt:'
+                  ),
+                  ' ',
+                  this.props.currentState.apt
+                ) : null,
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Marital Status:'
+                  ),
+                  ' ',
+                  this.props.currentState.maritalStatus
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Race:'
+                  ),
+                  ' ',
+                  this.props.currentState.race
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Medical History:'
+                  ),
+                  ' ',
+                  this.props.currentState.history.join(', ')
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Smoke:'
+                  ),
+                  ' ',
+                  this.props.currentState.smoke
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Alcohol:'
+                  ),
+                  ' ',
+                  this.props.currentState.alcohol
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Drugs:'
+                  ),
+                  ' ',
+                  this.props.currentState.drugs
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Medication Allergies:'
+                  ),
+                  ' ',
+                  this.props.currentState.allergies
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Surgeries:'
+                  ),
+                  ' ',
+                  this.props.currentState.surgeries
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'Other Comments:'
+                  ),
+                  ' ',
+                  this.props.currentState.otherComments
+                )
+              ) : _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Header,
+                  null,
+                  'Oops!'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Please complete all required fields.'
+                )
+              )
+            )
+          ),
+          this.state.complete ? _react2.default.createElement(
+            _semanticUiReact.Modal.Actions,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Button,
+              { onClick: this.close },
+              'Back'
+            ),
+            _react2.default.createElement(_semanticUiReact.Button, { color: 'teal', icon: 'checkmark', labelPosition: 'right', content: 'Submit', onClick: this.onSubmit })
+          ) : _react2.default.createElement(
+            _semanticUiReact.Modal.Actions,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Button,
+              { onClick: this.close },
+              'Back'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return ModalButton;
+}(_react2.default.Component);
+
+exports.default = ModalButton;
 
 /***/ })
 /******/ ]);

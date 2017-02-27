@@ -1,6 +1,15 @@
 import React from 'react';
 import { Checkbox, Form, Input, TextArea } from 'semantic-ui-react';
 
+const options = [
+{'options' : ['Cancer', 'Diabetes', 'Hypertension', 'Coronary Artery Disease', 'Congestive Heart Failure']},
+{'options' : ['Heart attack', 'Stroke', 'Arrythmia', 'Deep vein thrombosis', 'Asthma']},
+{'options' : ['Chronic Obstructive Pulmonary Disease', 'Tuberculosis', 'Gastro esophageal reflux disease', 'Irritable bowel syndrome', 'Inflammatory bowel disease']},
+{'options' : ['Hepatitis', 'Cirrhosis', 'Kidney Disease', 'Thyroid disease', 'Arthritis']},
+{'options' : ['Back pain', 'Seizures', 'Depression', 'Bipolar', 'Anxiety']},
+{'options' : ['Psychotic disorder', 'Substance abuse', 'HIV', 'STDs', 'Eye disease']}
+];
+
 export default class MedicalHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -17,168 +26,18 @@ export default class MedicalHistory extends React.Component {
     return (
       <div>
         <p><b>Please check to indicate if you have ever had the following conditions:</b></p>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Cancer' 
-          value='Cancer'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Diabetes' 
-          value='Diabetes'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Hypertension' 
-          value='Hypertension'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Coronary Artery Disease' 
-          value='Coronary Artery Disease'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Kidney disease' 
-          value='Kidney disease'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Congestive Heart Failure' 
-          value='Congestive Heart Failure'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Heart attack' 
-          value='Heart attack'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Stroke' 
-          value='Stroke'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Arrythmia' 
-          value='Arrythmia'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Deep vein thrombosis' 
-          value='Deep vein thrombosis'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Asthma' 
-          value='Asthma'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Chronic Obstructive Pulmonary Disease' 
-          value='Chronic Obstructive Pulmonary Disease'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Tuberculosis' 
-          value='Tuberculosis'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Gastro esophageal reflux disease'
-          value='Gastro esophageal reflux disease'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Irratable bowel syndrome'
-          value='Irratable bowel syndrome'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Inflammatory bowel disease'
-          value='Inflammatory bowel disease'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Hepatitis' 
-          value='Hepatitis'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Cirrhosis' 
-          value='Cirrhosis'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Kidney Disease' 
-          value='Kidney Disease'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Thyroid disease' 
-          value='Thyroid disease'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Arthritis' 
-          value='Arthritis'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Back pain' 
-          value='Back pain'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Seizures' 
-          value='Seizures'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Depression' 
-          value='Depression'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Bipolar' 
-          value='Bipolar'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Checkbox  
-          name='history'
-          label='Anxiety' 
-          value='Anxiety'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Psychotic disorder' 
-          value='Psychotic disorder'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='Substance abuse' 
-          value='Substance abuse'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='HIV' 
-          value='HIV'
-          onChange={this.props.clickHandler} />
-          <Form.Checkbox  
-          name='history'
-          label='STDs' 
-          value='STDs'
-          onChange={this.props.clickHandler} />
-        </Form.Group>
+        {options.map((row, key) => {
+          return <Form.Group key={key}widths='equal'>
+            {row.options.map((option, key) => {
+              return <Form.Checkbox
+              key={key}  
+              name='history'
+              label={option} 
+              value={option}
+              onChange={this.props.clickHandler} />
+            })}
+          </Form.Group>
+        })}
         <Form.Group widths='equal'>
           <Form.Input 
           required
