@@ -64,7 +64,7 @@ export default class IngestForm extends React.Component {
   }
 
   onSubmit = () => {
-    fetch('https://localhost:3000/api/submit', {
+    fetch('https://damp-crag-41038.herokuapp.com/api/submit', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
