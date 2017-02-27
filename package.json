@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon server/server.js",
-    "build": "webpack --config webpack.config.js --watch"
+    "build": "webpack --config webpack.config.js --watch",
+    "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress"
   },
   "dependencies": {
     "path": "^0.12.7",
