@@ -1,8 +1,5 @@
 import React from 'react';
-import { 
-  Checkbox, 
-  Form, 
-} from 'semantic-ui-react';
+import { Checkbox, Form } from 'semantic-ui-react';
 
 export default class MaritalStatus extends React.Component {
   constructor(props) {

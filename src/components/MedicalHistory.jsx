@@ -1,10 +1,5 @@
 import React from 'react';
-import { 
-  Checkbox, 
-  Form, 
-  Input,
-  TextArea, 
-} from 'semantic-ui-react';
+import { Checkbox, Form, Input, TextArea } from 'semantic-ui-react';
 
 export default class MedicalHistory extends React.Component {
   constructor(props) {

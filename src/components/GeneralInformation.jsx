@@ -1,8 +1,5 @@
 import React from 'react';
-import { 
-  Form, 
-  Input,
-} from 'semantic-ui-react';
+import { Form, Input } from 'semantic-ui-react';
 import {States as stateList} from '../data/States.jsx';
 
 const options = [
