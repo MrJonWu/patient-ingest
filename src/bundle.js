@@ -26191,7 +26191,7 @@ var IngestForm = function (_React$Component) {
     };
 
     _this.onSubmit = function () {
-      fetch('http://192.168.1.83:3000/api/submit', {
+      fetch('https://damp-crag-41038.herokuapp.com/api/submit', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
