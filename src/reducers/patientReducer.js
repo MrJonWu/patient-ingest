@@ -1,41 +1,33 @@
 export default function reducer(state={
-    patient: {
-      name: 'Jonathan',
-      age: 25,
-    },
-    fetching: false,
-    fetched: false,
-    error: null,
+    firstName: '',
+    lastName: '',
+    sex: '',
+    dateOfBirth: '',
+    email: '',
+    phone: '',
+    street: '',
+    apt: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    maritalStatus: '',
+    race: '',
+    history: [],
+    smoke: '',
+    alcohol: '',
+    drugs: '',
+    allergies: '',
+    medications: '',
+    surgeries: '',
+    otherComments: '',
+    agree: false,
   }, action) {
 
     switch (action.type) {
-      case "FETCH_USER": {
-        return {...state, fetching: true}
-      }
-      case "FETCH_USER_REJECTED": {
-        return {...state, fetching: false, error: action.payload}
-      }
-      case "FETCH_USER_FULFILLED": {
-        return {
-          ...state,
-          fetching: false,
-          fetched: true,
-          user: action.payload,
-        }
-      }
-      case "SET_USER_NAME": {
-        return {
-          ...state,
-          user: {...state.user, name: action.payload},
-        }
-      }
-      case "SET_USER_AGE": {
-        return {
-          ...state,
-          user: {...state.user, age: action.payload},
-        }
+      case "SET_INPUT_VALUE": {
+        return {...state, [action.property]: action.payload}
       }
     }
-
+    console.log(state);
     return state
 }

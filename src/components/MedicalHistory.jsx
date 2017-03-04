@@ -1,5 +1,7 @@
 import React from 'react';
 import { Checkbox, Form, Input, TextArea } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { setInputValue } from '../actions/patientActions';
 
 const options = [
 {'options' : ['Cancer', 'Diabetes', 'Hypertension', 'Coronary Artery Disease', 'Congestive Heart Failure']},
@@ -9,6 +11,19 @@ const options = [
 {'options' : ['Back pain', 'Seizures', 'Depression', 'Bipolar', 'Anxiety']},
 {'options' : ['Psychotic disorder', 'Substance abuse', 'HIV', 'STDs', 'Eye disease']}
 ];
+
+@connect((store) => {
+  return {
+    smoke: store.patient.smoke,
+    alcohol: store.patient.alcohol,
+    drugs: store.patient.drugs,
+    medications: store.patient.medications,
+    allergies: store.patient.allergies,
+    surgeries: store.patient.surgeries,
+    history: store.patient.history,
+    otherComments: store.patient.otherComments
+  };
+})
 
 export default class MedicalHistory extends React.Component {
   constructor(props) {
@@ -20,6 +35,18 @@ export default class MedicalHistory extends React.Component {
 
   onClickHandler = (e, { value }) => {
     this.setState({history: value});
+  }
+
+  checkboxClickHandler = (e, { name, value }) => {
+    var tempArr = this.props.history;
+    !tempArr.includes(value) ? tempArr.push(value) : tempArr.splice(tempArr.indexOf(value), 1);
+    // this.setState({history: tempArr});
+    this.props.dispatch(setInputValue(name, tempArr));
+    this.forceUpdate();
+  }
+
+  onChangeHandler = (e, { name, value }) => {
+    this.props.dispatch(setInputValue(name, value));
   }
 
   render() {
@@ -34,7 +61,8 @@ export default class MedicalHistory extends React.Component {
               name='history'
               label={option} 
               value={option}
-              onChange={this.props.clickHandler} />
+              checked={this.props.history.includes(option)}
+              onChange={this.checkboxClickHandler} />
             })}
           </Form.Group>
         })}
@@ -43,43 +71,50 @@ export default class MedicalHistory extends React.Component {
           required
           name='smoke'
           label='Do you smoke any tobacco products?' 
-          placeholder='If yes, how much and how often?' 
-          onChange={this.props.onChangeHandler} />
+          placeholder='If yes, how much and how often?'
+          value={this.props.smoke} 
+          onChange={this.onChangeHandler} />
           <Form.Input 
           required
           name='alcohol'
           label='Do you drink alcohol?' 
           placeholder='If yes, how much and how often?' 
-          onChange={this.props.onChangeHandler} />
+          value={this.props.alcohol}
+          onChange={this.onChangeHandler} />
           <Form.Input
           required 
           name='drugs'
           label='Have you regularly used other drugs?' 
-          placeholder='If yes, how much and how often?' 
-          onChange={this.props.onChangeHandler} />
+          placeholder='If yes, how much and how often?'
+          value={this.props.drugs} 
+          onChange={this.onChangeHandler} />
         </Form.Group>
         <Form.TextArea 
           autoHeight 
           name='medications'
           label='Current medications' 
           placeholder='Please list any medications that you are currently taking. Include non-prescription medications and vitamins or supplements (Medication name / Dosage)'
-          onChange={this.props.onChangeHandler} />
+          value={this.props.medications}
+          onChange={this.onChangeHandler} />
           <Form.TextArea 
           autoHeight 
           name='allergies'
           label='Medication allergies or reactions' 
           placeholder='Please list any medication allergies or reactions'
-          onChange={this.props.onChangeHandler} />
+          value={this.props.allergies}
+          onChange={this.onChangeHandler} />
           <Form.TextArea 
           autoHeight 
           name='surgeries'
           label='Please list any surgeries or hospital stays you had and their approximate date / year' placeholder='Type of surgery / reason for hospitalization / location / date'
-          onChange={this.props.onChangeHandler} />
+          value={this.props.surgeries}
+          onChange={this.onChangeHandler} />
           <Form.TextArea 
           name='otherComments'
           label='Other comments' 
           placeholder='Other important information we may have missed'
-          onChange={this.props.onChangeHandler} />
+          value={this.props.otherComments}
+          onChange={this.onChangeHandler} />
       </div>
     );
   }

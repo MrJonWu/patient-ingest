@@ -1,11 +1,21 @@
 import React from 'react';
 import { Checkbox, Form } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { setInputValue } from '../actions/patientActions';
+
+@connect((store) => {
+  return {
+    agree: store.patient.agree,
+  };
+})
 
 export default class Contract extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+  }
+
+  agreeHandler = (e, {name}) => {
+    this.props.dispatch(setInputValue(name, !this.props.agree));
   }
 
   render() {
@@ -16,7 +26,9 @@ export default class Contract extends React.Component {
         <Form.Checkbox 
         required
         label='I agree to the Terms and Conditions' 
-        onClick={this.props.clickHandler}/>
+        name='agree'
+        checked={this.props.agree}
+        onClick={this.agreeHandler}/>
       </div>
     );
   }

@@ -5,7 +5,7 @@ import GeneralInformation from './GeneralInformation.jsx';
 import MaritalStatus from './MaritalStatus.jsx';
 import Race from './Race.jsx';
 import MedicalHistory from './MedicalHistory.jsx';
-import Contract from  './Contract.jsx';
+import Contract from './Contract.jsx';
 import ModalButton from './Modal.jsx';
 
 // const url = 'https://damp-crag-41038.herokuapp.com';
