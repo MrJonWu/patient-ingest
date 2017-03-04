@@ -1,5 +1,14 @@
 import React from 'react';
-import IngestForm from './Form.jsx';
+// import IngestForm from './Form.jsx';
+import IngestFormMultipage from './FormMultipage.jsx';
+import { connect } from 'react-redux';
+
+@connect((store) => {
+  return {
+    firstName: store.patient.patient.name,
+    age: store.patient.patient.age
+  };
+})
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,9 +18,10 @@ export default class App extends React.Component {
   }
 
   render() {
+    console.log(this.props.age, this.props.firstName)
     return (
       <div>
-        <IngestForm />
+        <IngestFormMultipage />
       </div>
     );
   }

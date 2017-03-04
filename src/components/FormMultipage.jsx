@@ -1,19 +1,13 @@
 import React from 'react';
 import { Button, Form, Container } from 'semantic-ui-react';
-import {States as stateList} from '../data/States.jsx';
-import GeneralInformation from './GeneralInformation.jsx';
-import MaritalStatus from './MaritalStatus.jsx';
-import Race from './Race.jsx';
-import MedicalHistory from './MedicalHistory.jsx';
-import Contract from  './Contract.jsx';
-import ModalButton from './Modal.jsx';
+import Screen1 from './screen1.jsx';
 
 // const url = 'https://damp-crag-41038.herokuapp.com';
 const url = 'http://192.168.1.83:3000';
 
 const requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode','smoke', 'alcohol', 'drugs', 'agree'];
 
-export default class IngestForm extends React.Component {
+export default class IngestFormMultipage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,20 +78,8 @@ export default class IngestForm extends React.Component {
 
   render() {
     return (
-       <Container>
-       {this.state.submission ? 
-        <div>
-          <h1>Success!</h1>
-        </div> :
-        <Form>
-          <h1>Patient Ingest Form</h1>
-          <GeneralInformation onChangeHandler={this.onChangeHandler} />
-          <MaritalStatus clickHandler={this.onChangeHandler} />
-          <Race clickHandler={this.onChangeHandler} />
-          <MedicalHistory clickHandler={this.checkboxClickHandler} onChangeHandler={this.onChangeHandler}/>
-          <Contract clickHandler={this.agreeHandler} />
-          <ModalButton currentState={this.state} checkReqFields={this.checkReqFields} onSubmit={this.onSubmit} />
-        </Form> }
+      <Container>
+        <Screen1 /> 
       </Container>
     );
   }
