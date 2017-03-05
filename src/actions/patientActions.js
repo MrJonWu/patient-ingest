@@ -1,5 +1,4 @@
 export function setInputValue(property, value) {
-  console.log(property, value);
   return {
     type: 'SET_INPUT_VALUE',
     property: property,

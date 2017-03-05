@@ -55,6 +55,5 @@ export default function reducer(state=initial, action) {
         break;
       }
     }
-    console.log(state);
     return state
 }

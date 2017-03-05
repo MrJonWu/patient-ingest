@@ -121,9 +121,12 @@ export default class ModalButton extends React.Component {
                     <li><p><b>Children:</b>{this.props.familyHistory.children.join(', ')}</p></li>
                   </ul>
                   <p><b>Medical History:</b> {this.props.history.join(', ')}</p>
-                  <p><b>Smoke:</b> {this.props.smoke.smoke + ' ' + this.props.smoke.frequency}</p>
-                  <p><b>Alcohol:</b> {this.props.alcohol.alcohol + ' ' + this.props.alcohol.frequency}</p>
-                  <p><b>Drugs:</b> {this.props.drugs.drugs + ' ' + this.props.drugs.frequency}</p>
+                  <p><b>Smoke:</b> {this.props.smoke.smoke}</p>
+                  {this.props.smoke.smoke === "Yes" && <p><b>Smoke Frequency:</b> {this.props.smoke.frequency}</p>}
+                  <p><b>Alcohol:</b> {this.props.alcohol.alcohol}</p>
+                  {this.props.alcohol.alcohol === "Yes" && <p><b>Alcohol Frequency:</b> {this.props.alcohol.frequency}</p>}
+                  <p><b>Drugs:</b> {this.props.drugs.drugs}</p>
+                  {this.props.drugs.drugs === "Yes" && <p><b>Drug Frequency:</b> {this.props.drugs.frequency}</p>}
                   <p><b>Medication Allergies:</b> {this.props.allergies}</p>
                   <p><b>Surgeries:</b> {this.props.surgeries}</p>
                   <p><b>Other Comments:</b> {this.props.otherComments}</p>
