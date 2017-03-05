@@ -5,8 +5,11 @@ import GeneralInformation from './GeneralInformation.jsx';
 import MaritalStatus from './MaritalStatus.jsx';
 import Race from './Race.jsx';
 import MedicalHistory from './MedicalHistory.jsx';
-import Contract from  './Contract.jsx';
+import Contract from './Contract.jsx';
 import ModalButton from './Modal.jsx';
+
+// const url = 'https://damp-crag-41038.herokuapp.com';
+const url = 'http://192.168.1.83:3000';
 
 const requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode','smoke', 'alcohol', 'drugs', 'agree'];
 
@@ -64,7 +67,7 @@ export default class IngestForm extends React.Component {
   }
 
   onSubmit = () => {
-    fetch('https://damp-crag-41038.herokuapp.com/api/submit', {
+    fetch( url + '/api/submit', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

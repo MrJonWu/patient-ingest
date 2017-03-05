@@ -13,6 +13,9 @@
 h1 {
   text-align: center;
 }
+p {
+  font-size: 1em;
+}
 nav {
   height: 62px;
   width: 100%;
@@ -21,13 +24,38 @@ nav {
   flex-direction: row;
   align-items: center;
 }
+footer {
+  height: 100px;
+  width: 100%;
+}
 .logo {
   font-family: Brandon;
   font-size: 32px;
   color: #17c0a9;
   padding-left: 10px;
 }
-footer {
-  height: 100px;
-  width: 100%;
+.steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.ui.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.ui.form {
+  width: 845px;
+  margin-top: 20px;
+}
+.ui.form .field {
+  margin-bottom: 35px;
+}
+.ui.form .field>label {
+  font-size: 1em;
+}
+.ui.form .fields .field {
+  margin-bottom: 15px;
 }
