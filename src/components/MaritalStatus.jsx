@@ -15,7 +15,6 @@ export default class MaritalStatus extends React.Component {
   }
   
   onChangeHandler = (e, { name, value }) => {
-    console.log(value);
     this.props.dispatch(setInputValue(name, value));
   }
 

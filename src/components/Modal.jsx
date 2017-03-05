@@ -1,5 +1,39 @@
-import React, { Component } from 'react'
-import { Popup, Button, Header, Image, Modal, Divider } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Popup, Button, Header, Image, Modal, Divider } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { resetValue, setInputValue } from '../actions/patientActions';
+
+const requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode','smoke', 'alcohol', 'drugs', 'agree'];
+
+const url = 'http://192.168.1.83:3000';
+
+@connect((store) => {
+  return {
+    firstName: store.patient.firstName,
+    lastName: store.patient.lastName,
+    sex: store.patient.sex,
+    dateOfBirth: store.patient.dateOfBirth,
+    email: store.patient.email,
+    phone: store.patient.phone,
+    street: store.patient.street,
+    apt: store.patient.apt,
+    city: store.patient.city,
+    state: store.patient.state,
+    zipcode: store.patient.zipcode,
+    maritalStatus: store.patient.maritalStatus,
+    race: store.patient.race,
+    familyHistory: store.patient.familyHistory,
+    history: store.patient.history,
+    smoke: store.patient.smoke,
+    alcohol: store.patient.alcohol,
+    drugs: store.patient.drugs,
+    medications: store.patient.medications,
+    allergies: store.patient.allergies,
+    surgeries: store.patient.surgeries,
+    otherComments: store.patient.otherComments,
+    agree: store.patient.agree,
+  };
+})
 
 export default class ModalButton extends React.Component {
   constructor(props) {
@@ -10,22 +44,44 @@ export default class ModalButton extends React.Component {
     };
   }
 
+  checkReqFields = () => {
+    for (var i = 0; i < requiredFields.length; i++) {
+      if (!this.props[requiredFields[i]]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   show = (dimmer) => (e) => {
     e.preventDefault();
-    if (this.props.checkReqFields()) {
+    if (this.checkReqFields()) {
       this.setState({complete: true}, () => this.setState({ dimmer, open: true }));
     } else {
       this.setState({complete: false}, () => this.setState({ dimmer, open: true }));
     }
-  };
+  }
 
   close = () => {
     this.setState({ open: false });
-  };
+  }
 
   onSubmit = () => {
     this.setState({ open: false });
-    this.props.onSubmit();
+    fetch( url + '/api/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.props)
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res, this.props);
+      this.props.dispatch(resetValue());
+    })
+    .catch((error) => alert('There was a problem with your submission: ' + error.message));
   }
 
   render() {
@@ -44,25 +100,33 @@ export default class ModalButton extends React.Component {
             <Modal.Description>
               {this.state.complete ? 
                 <div>
-                  <Header>Hello {this.props.currentState.firstName + ','} </Header>
+                  <Header>Hello {this.props.firstName + ','} </Header>
                   <p>Please confirm that the information below is correct.</p>
                   <Divider />
-                  <p><b>Full Name:</b> {this.props.currentState.firstName + ' ' + this.props.currentState.lastName}</p>
-                  <p><b>Sex:</b> {this.props.currentState.sex}</p>
-                  <p><b>Date of Birth:</b> {this.props.currentState.dateOfBirth}</p>
-                  <p><b>Email:</b> {this.props.currentState.email}</p>
-                  <p><b>Phone:</b> {this.props.currentState.phone}</p>
-                  <p><b>Home Address:</b> {this.props.currentState.street + ', ' + this.props.currentState.city + ', ' + this.props.currentState.state + ', ' + this.props.currentState.zipcode}</p>
-                  {this.props.currentState.apt ? <p><b>Apt:</b> {this.props.currentState.apt}</p> : null}
-                  <p><b>Marital Status:</b> {this.props.currentState.maritalStatus}</p>
-                  <p><b>Race:</b> {this.props.currentState.race}</p>
-                  <p><b>Medical History:</b> {this.props.currentState.history.join(', ')}</p>
-                  <p><b>Smoke:</b> {this.props.currentState.smoke}</p>
-                  <p><b>Alcohol:</b> {this.props.currentState.alcohol}</p>
-                  <p><b>Drugs:</b> {this.props.currentState.drugs}</p>
-                  <p><b>Medication Allergies:</b> {this.props.currentState.allergies}</p>
-                  <p><b>Surgeries:</b> {this.props.currentState.surgeries}</p>
-                  <p><b>Other Comments:</b> {this.props.currentState.otherComments}</p>
+                  <p><b>Full Name:</b> {this.props.firstName + ' ' + this.props.lastName}</p>
+                  <p><b>Sex:</b> {this.props.sex}</p>
+                  <p><b>Date of Birth:</b> {this.props.dateOfBirth}</p>
+                  <p><b>Email:</b> {this.props.email}</p>
+                  <p><b>Phone:</b> {this.props.phone}</p>
+                  <p><b>Home Address:</b> {this.props.street + ', ' + this.props.city + ', ' + this.props.state + ', ' + this.props.zipcode}</p>
+                  {this.props.apt ? <p><b>Apt:</b> {this.props.apt}</p> : null}
+                  <p><b>Marital Status:</b> {this.props.maritalStatus}</p>
+                  <p><b>Race:</b> {this.props.race}</p>
+                  <p><b>Family History:</b></p>
+                  <ul>
+                    <li><p><b>Grandparents:</b>{this.props.familyHistory.grandparents.join(', ')}</p></li>
+                    <li><p><b>Father:</b>{this.props.familyHistory.father.join(', ')}</p></li>
+                    <li><p><b>Mother:</b>{this.props.familyHistory.mother.join(', ')}</p></li>
+                    <li><p><b>Siblings:</b>{this.props.familyHistory.siblings.join(', ')}</p></li>
+                    <li><p><b>Children:</b>{this.props.familyHistory.children.join(', ')}</p></li>
+                  </ul>
+                  <p><b>Medical History:</b> {this.props.history.join(', ')}</p>
+                  <p><b>Smoke:</b> {this.props.smoke.smoke + ' ' + this.props.smoke.frequency}</p>
+                  <p><b>Alcohol:</b> {this.props.alcohol.alcohol + ' ' + this.props.alcohol.frequency}</p>
+                  <p><b>Drugs:</b> {this.props.drugs.drugs + ' ' + this.props.drugs.frequency}</p>
+                  <p><b>Medication Allergies:</b> {this.props.allergies}</p>
+                  <p><b>Surgeries:</b> {this.props.surgeries}</p>
+                  <p><b>Other Comments:</b> {this.props.otherComments}</p>
                   </div> : 
                 <div>
                   <Header>Oops!</Header>

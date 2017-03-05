@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Form } from 'semantic-ui-react';
-import MaritalStatus from './MaritalStatus.jsx';
-import Race from './Race.jsx';
+import FamilyHistory from './FamilyHistory.jsx';
 import { connect } from 'react-redux';
 import { nextScreen, previousScreen } from '../actions/screenActions';
 
@@ -29,7 +28,8 @@ export default class Screen2 extends React.Component {
   render() {
     return (
       <Form>
-        <Race />
+        <FamilyHistory />
+        <br />
         <Button floated='right' color='teal' content="Next" onClick={this.onNextHandler} />
         <Button floated='right' onClick={this.onBackHandler}>Back</Button>
       </Form>

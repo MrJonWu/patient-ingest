@@ -25,7 +25,7 @@ export default class Screen3 extends React.Component {
     return (
       <Form>
         <Contract />
-        <ModalButton currentState={this.state} checkReqFields={this.checkReqFields} onSubmit={this.onSubmit} />
+        <ModalButton onSubmit={this.onSubmit} />
         <Button floated='right' onClick={this.onBackHandler}>Back</Button>
       </Form>
     );

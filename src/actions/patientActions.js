@@ -1,14 +1,14 @@
-export function setFirstName(name) {
+export function setInputValue(property, value) {
+  console.log(property, value);
   return {
-    type: 'SET_FIRST_NAME',
-    payload: name,
+    type: 'SET_INPUT_VALUE',
+    property: property,
+    payload: value,
   };
 }
 
-export function setInputValue(property, value) {
+export function resetValue() {
   return {
-    type: 'SET_INPUT_VALUE',
-    payload: value,
-    property: property,
+    type: 'RESET_VALUE',
   };
 }

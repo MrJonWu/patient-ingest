@@ -8,6 +8,9 @@ export default function reducer(state={
       case "PREVIOUS_SCREEN": {
         return {...state, screen: state.screen - action.payload}
       }
+      case "RESET_VALUE": {
+        return {...state, screen: 1}
+      }
     }
     return state
 }
