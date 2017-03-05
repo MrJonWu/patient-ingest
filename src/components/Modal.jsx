@@ -5,8 +5,8 @@ import { resetValue, setInputValue } from '../actions/patientActions';
 
 const requiredFields = ['firstName', 'lastName', 'sex', 'dateOfBirth', 'email', 'phone', 'street', 'city', 'state', 'zipcode','smoke', 'alcohol', 'drugs', 'agree'];
 
-// const url = 'http://192.168.1.83:3000';
 const url = 'https://damp-crag-41038.herokuapp.com';
+// const url = 'http://192.168.1.83:3000';
 
 @connect((store) => {
   return {
