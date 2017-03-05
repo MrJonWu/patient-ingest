@@ -1,19 +1,15 @@
 import React from 'react';
-import { Button, Form, Container, Step } from 'semantic-ui-react';
+import { Button, Form, Container, Step, Message } from 'semantic-ui-react';
 import Screen1 from './Screen1.jsx';
 import Screen2 from './Screen2.jsx';
 import Screen3 from './Screen3.jsx';
 import Screen4 from './Screen4.jsx';
 import { connect } from 'react-redux';
 
-
-// const url = 'https://damp-crag-41038.herokuapp.com';
-const url = 'http://192.168.1.83:3000';
-
-
 @connect((store) => {
   return {
-    screen: store.screen.screen
+    screen: store.screen.screen,
+    submitted: store.screen.submitted,
   }
 })
 
@@ -47,6 +43,11 @@ export default class IngestFormMultipage extends React.Component {
     ]
     return (
       <Container className='container'>
+        {this.props.submitted && 
+        <Message positive>
+          <Message.Header>Thank You!</Message.Header>
+          <p>Your submission has been received!</p>
+        </Message>}
         <h1>Patient Ingest Form</h1>
         <div className='steps'>     
           <Step.Group size='small' ordered items={steps} />

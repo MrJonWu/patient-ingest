@@ -68,7 +68,7 @@ export default class MedicalHistory extends React.Component {
           </Form.Group>
         })}
         <Divider />
-        <label><b>Do you smoke any tobacco products?</b></label>
+        <label><b>Do you smoke any tobacco products? (Required)</b></label>
         <Form.Group>
           <Form.Checkbox 
             radio 
@@ -97,7 +97,7 @@ export default class MedicalHistory extends React.Component {
             onChange={this.radioChangeHandler} />}
         </Form.Group>
         <Divider />
-        <label><b>Do you drink alcohol?</b></label>
+        <label><b>Do you drink alcohol? (Required)</b></label>
         <Form.Group>
           <Form.Checkbox 
             radio 
@@ -126,7 +126,7 @@ export default class MedicalHistory extends React.Component {
             onChange={this.radioChangeHandler} />}
         </Form.Group>
         <Divider />
-        <label><b>Have you regularly used illicit drugs?</b></label>
+        <label><b>Have you regularly used illicit drugs? (Required)</b></label>
         <Form.Group>
           <Form.Checkbox 
             radio 
